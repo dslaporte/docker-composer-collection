@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Troque 'admin' pela senha desejada
+    networks:
+      - monitoring
+
+  # api:
+  #   image: sua-imagem-da-api  # Substitua pela imagem da sua API
+  #   container_name: api
+  #   ports:
+  #     - "9000:9000"
+  #   networks:
+  #     - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
